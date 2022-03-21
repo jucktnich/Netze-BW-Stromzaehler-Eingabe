@@ -4,7 +4,7 @@ var track = undefined;
 
 function initFlashlight() {
     return new Promise ((resolve, reject) => {
-        navigator.mediaDevices.getUserMedia({
+        /*navigator.mediaDevices.getUserMedia({
             video: {facingMode: 'environment', width: 320}
         }).then(stream => {
             track = stream.getVideoTracks()[0];
@@ -12,7 +12,38 @@ function initFlashlight() {
             const photoCapabilities = imageCapture.getPhotoCapabilities().then(() => {
                 resolve();
             });
-        });
+        });*/
+        navigator.mediaDevices.enumerateDevices().then(devices => {
+  
+            const cameras = devices.filter((device) => device.kind === 'videoinput');
+        
+            if (cameras.length === 0) {
+              throw 'No camera found on this device.';
+            }
+            const camera = cameras[cameras.length - 1];
+        
+            // Create stream and get video track
+            navigator.mediaDevices.getUserMedia({
+              video: {
+                deviceId: camera.deviceId,
+                facingMode: ['user', 'environment'],
+                height: {ideal: 1080},
+                width: {ideal: 1920}
+              }
+            }).then(stream => {
+              const track = stream.getVideoTracks()[0];
+        
+              //Create image capture object and get camera capabilities
+              const imageCapture = new ImageCapture(track)
+              const photoCapabilities = imageCapture.getPhotoCapabilities().then(() => {
+        
+                //todo: check if camera has a torch
+        
+                //let there be light!
+                resolve();
+              });
+            });
+          });
     });
 }
 

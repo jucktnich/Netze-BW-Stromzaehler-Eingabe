@@ -13,4 +13,4 @@ setTimeout(function() {flashlight.addPattern([
         isOn: true,
         length: 1000
     }
-])}, 1000)
+])}, 3000)

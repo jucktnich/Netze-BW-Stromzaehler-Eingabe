@@ -1,6 +1,6 @@
 import * as flashlight from "./flashlight.js"
 
-flashlight.addPattern([
+setTimeout(function() {flashlight.addPattern([
     {
         isOn: true,
         length: 1000
@@ -13,4 +13,4 @@ flashlight.addPattern([
         isOn: true,
         length: 1000
     }
-])
+])}, 1000)
